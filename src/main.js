@@ -2,24 +2,23 @@ import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import VueRouter from 'vue-router';
-Vue.config.productionTip = false
-const Attractions = { template: '<div>Attractions</div>' }
-const Breakfast = { template: '<div>Breakfast</div>' }
-const Meat = { template: '<div>Meat</div>' }
-const Sushi = { template: '<div>Sushi</div>' }
+import { GetAccount } from './APIs/APIsFromServer';
+import { routes } from "./route";
 
-const routes = [
-  { path: '/', component: Attractions },
-  { path: '/breakfast', component: Breakfast },
-  { path: '/meat', component: Meat },
-  { path: '/sushi', component: Sushi },
-]
-
+Vue.use(VueRouter);
 const router = new VueRouter({
-  routes // short for `routes: routes`
-})
+  mode: "history",
+  routes,
+});
+Vue.config.productionTip = true
+Vue.prototype.$GetAccount = GetAccount
+
 new Vue({
   vuetify,
   router,
+  created: function () {
+    console.log(this.$data)
+
+  },
   render: h => h(App)
 }).$mount('#app')
