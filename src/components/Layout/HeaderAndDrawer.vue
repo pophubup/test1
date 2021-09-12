@@ -15,12 +15,17 @@
           <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
         </v-list-item-avatar>
 
-        <v-list-item-title>XXX</v-list-item-title>
+        <v-list-item-title>某某先生 您好,</v-list-item-title>
       </v-list-item>
 
       <v-divider></v-divider>
       <v-list dense>
-        <v-list-item v-for="item in items" :key="item.title" link>
+        <v-list-item
+          v-for="item in items"
+          :key="item.title"
+          :to="item.link"
+          link
+        >
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -63,13 +68,16 @@ export default {
       inset: false,
     },
     items: [
-      { title: "Home", icon: "mdi-home-city" },
-      { title: "My Account", icon: "mdi-account" },
-      { title: "Users", icon: "mdi-account-group-outline" },
+      {
+        title: "統計表",
+        icon: "mdi-home-city",
+        link: "/Assemble",
+      },
+      { title: "表格", icon: "mdi-account", link: "/DateGrid" },
+      // { title: "Users", icon: "mdi-account-group-outline" },
     ],
   }),
 };
 </script>
 
-<style>
-</style>
+<style></style>

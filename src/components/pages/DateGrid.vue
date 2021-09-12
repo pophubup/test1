@@ -15,14 +15,25 @@
       }"
     >
       <template v-slot:top>
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Search"
-          class="mx-4"
-          single-line
-          hide-details
-        ></v-text-field>
+        <v-container>
+          <v-row>
+            <v-col md="6">
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="搜尋"
+                class="mx-4"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-col>
+            <v-col offset-md="5">
+              <v-btn depressed color="primary" @click="dialog = true">
+                新增
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
       </template>
       <template v-slot:item.index="props">
         <v-edit-dialog
@@ -105,13 +116,126 @@
       </template>
     </v-data-table>
 
-    <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
-      {{ snackText }}
+    <v-dialog v-model="dialog" persistent max-width="1100">
+      <v-card style="padding:10px;">
+        <v-card-title>
+          <v-row>
+            <v-col md="6">
+              <p>新增帳戶</p>
+            </v-col>
+            <v-col offset-md="5">
+              <v-btn color="darken-1" text @click="dialog = false">
+                離開
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card-title>
+        <v-form @submit.prevent="saveNew">
+          <v-container>
+            <v-row>
+              <v-col cols="12" md="4">
+                <v-select
+                  v-model="model.accountType"
+                  item-text="text"
+                  item-value="text"
+                  label="帳戶屬性"
+                  :items="acctype"
+                  autosize="false"
+                  required
+                ></v-select>
+              </v-col>
 
-      <template v-slot:action="{ attrs }">
-        <v-btn v-bind="attrs" text @click="snack = false"> Close </v-btn>
-      </template>
-    </v-snackbar>
+              <v-col cols="12" md="4">
+                <v-text-field
+                  v-model="model.accountAbbrev"
+                  label="帳戶簡稱"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="4">
+                <v-text-field
+                  v-model="model.accountAcc"
+                  label="銀行帳號"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="4">
+                <v-select
+                  v-model="model.accountRepersent"
+                  item-text="text"
+                  item-value="text"
+                  label="行庫代號"
+                  :items="branchNumbers"
+                  required
+                ></v-select>
+              </v-col>
+              <v-col cols="12" md="4">
+                <v-text-field
+                  v-model="model.accountBranch"
+                  label="分行代碼"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="4">
+                <v-text-field
+                  v-model="model.accountName"
+                  label="開戶名稱"
+                  required
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="12" md="4">
+                <v-text-field
+                  v-model="model.FundFrom"
+                  label="資金科目"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="4">
+                <v-text-field
+                  v-model="model.LoanOrNot"
+                  label="借貸"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="4">
+                <v-text-field
+                  v-model="model.FundBalance"
+                  label="帳戶餘額"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="12">
+                <v-textarea
+                  v-model="model.accountMoment"
+                  label="註記"
+                  rows="3"
+                ></v-textarea>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col offset-md="11">
+                <v-btn type="submit" color="green darken-1" text> 送出</v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-form>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialog2" max-width="300">
+      <v-card>
+        <v-card-title>
+          <span class="text-h5">{{ model.accountAbbrev }}</span>
+        </v-card-title>
+        <v-card-text> 新增成功</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="dialog2 = false">
+            確定
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -127,6 +251,21 @@ export default {
       pagination: {},
       acctype: [],
       branchNumbers: [],
+      dialog: false,
+      dialog2: false,
+      model: {
+        accountType: "",
+        accountAbbrev: "",
+        accountAcc: "",
+        accountRepersent: "",
+        accountBranch: "",
+        accountName: "",
+        accountMoment: "",
+        FundFrom: "",
+        LoanOrNot: "",
+        FundBalance: "",
+        ModifiedDate: "",
+      },
       headers: [
         {
           text: "index",
@@ -168,6 +307,11 @@ export default {
     },
     close() {
       console.log("Dialog closed");
+    },
+    saveNew() {
+      this.dialog = false;
+      this.dialog2 = true;
+      console.log(this.model);
     },
   },
   mounted() {
