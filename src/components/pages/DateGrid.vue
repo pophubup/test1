@@ -44,6 +44,8 @@
           @cancel="cancel"
           @open="open"
           @close="close"
+          save-text="儲存"
+          cancel-text="取消"
         >
           <div>{{ props.item.index }}</div>
           <template v-slot:input>
@@ -68,6 +70,8 @@
           @cancel="cancel"
           @open="open"
           @close="close"
+          save-text="儲存"
+          cancel-text="取消"
         >
           <div>{{ props.item.accountType }}</div>
           <template v-slot:input>
@@ -95,6 +99,8 @@
           @cancel="cancel"
           @open="open"
           @close="close"
+          save-text="儲存"
+          cancel-text="取消"
         >
           <div>{{ props.item.accountRepersent }}</div>
           <template v-slot:input>
